@@ -8,9 +8,7 @@ const imageMin = require('gulp-imagemin');
 const merge = require('gulp-merge');
 
 const myFiles = [
-    './app/js/document.js',
     './app/js/functions.js',
-    './app/js/*.js',
 ]
 
 gulp.task('imgMin', function () {
@@ -20,21 +18,13 @@ gulp.task('imgMin', function () {
 })
 
 gulp.task('sass', function () {
-    return merge(
-        gulp.src('./app/styles/*.scss')
-            .pipe(sass())
-            .pipe(cssnano({
-                zindex: false,
-                discardUnused: false
-            })),
-        gulp.src('./vendors/fontawesome/css/all.css')
-            .pipe(sass())
-            .pipe(cssnano({
-                zindex: false,
-                discardUnused: false,
-            }))
-    )
-        .pipe(concat('style.min.css'))
+    return gulp.src('./app/scss/*.scss')
+        .pipe(sass())
+        .pipe(cssnano({
+            zindex: false,
+            discardUnused: false
+        }))
+        .pipe(concat('all.min.css'))
         .pipe(gulp.dest('./dist/css'))
 })
 
@@ -44,14 +34,14 @@ gulp.task('js', function () {
             presets: ['@babel/env'],
             plugins: ["@babel/plugin-proposal-class-properties"],
         }))
-        .pipe(concat('app.min.js'))
+        .pipe(concat('all.min.js'))
         .pipe(uglify())
-        .pipe(gulp.dest('dist'));
+        .pipe(gulp.dest('./dist/js'));
 })
 
 gulp.task('go', function () {
-    gulp.watch('./app/styles/*.scss', gulp.series('sass')),
-        gulp.watch('./app/js/**/*.js', gulp.series('js'));
-    gulp.watch('./app/img/*', gulp.series('imgMin'));
+    gulp.watch('./app/scss/*.scss', gulp.series('sass')),
+        gulp.watch('./app/js/*.js', gulp.series('js')),
+        gulp.watch('./app/img/*', gulp.series('imgMin'));
     return
 });
