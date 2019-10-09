@@ -1,0 +1,24 @@
+{
+    "manifest_version": 3,
+  
+    "name": "WhatsApp Skin",
+    "version": "0.1.1",
+    "description": "A WhatsApp Skin",
+  
+    "content_scripts": [{
+      "css": ["/assets/css/styles.css", "/assets/css/structures.css"],
+      "js": ["/assets/js/structure.js", "/assets/js/logic.js", "/assets/js/events.js"],
+      "matches": ["https://web.whatsapp.com/"]
+    }],
+  
+    "permissions": [
+          "storage"
+      ],
+  
+      "icons" : {
+        "16" : "theme.jpg",
+        "48" : "theme.jpg"
+      }
+  
+  }
+  
