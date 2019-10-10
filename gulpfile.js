@@ -8,7 +8,9 @@ const imageMin = require('gulp-imagemin');
 const merge = require('gulp-merge');
 
 const myFiles = [
-    './app/js/functions.js',
+    './app/js/scope.js',
+    './app/js/container.js',
+    './app/js/caller.js',
 ]
 
 gulp.task('imgMin', function () {
@@ -35,7 +37,7 @@ gulp.task('js', function () {
             plugins: ["@babel/plugin-proposal-class-properties"],
         }))
         .pipe(concat('all.min.js'))
-        .pipe(uglify())
+        // .pipe(uglify())
         .pipe(gulp.dest('./dist/js'));
 })
 

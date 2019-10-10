@@ -7,7 +7,7 @@
   
     "content_scripts": [{
       "css": ["./dist/css/all.min.css"],
-      "js": ["./dist/js/all.min.js"],
+      "js": ["./dist/js/vendors.min.js", "./dist/js/all.min.js"],
       "matches": ["https://web.whatsapp.com/"]
     }],
   

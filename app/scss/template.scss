@@ -1,0 +1,20 @@
+@import './var-blackTheme.scss';
+
+.btn {
+    padding: 12px 30px;
+    border-radius: 60px;
+    text-decoration: none $i;
+    font-weight: 400;
+    display: inline-block;
+
+    &.btn-primary {
+        background: $primary $i;
+        color: $black $i;
+    }
+
+    &.btn-secondary {
+        background-color: transparent $i;
+        border: solid 1px $primary $i;
+        color: $primary $i;
+    }
+}
