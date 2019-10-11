@@ -6,6 +6,9 @@
     text-decoration: none $i;
     font-weight: 400;
     display: inline-block;
+    cursor: pointer;
+    filter: brightness(1);
+    transition: all 200ms ease;
 
     &.btn-primary {
         background: $primary $i;
@@ -16,5 +19,14 @@
         background-color: transparent $i;
         border: solid 1px $primary $i;
         color: $primary $i;
+    }
+
+    &:hover {
+        filter: brightness(1.2);
+
+        &.btn-secondary {
+            background: $primary $i;
+            color: $black $i;
+        }
     }
 }
