@@ -10,6 +10,7 @@ const merge = require('gulp-merge');
 const myFiles = [
     './app/js/scope.js',
     './app/js/container.js',
+    './app/js/theme.js',
     './app/js/caller.js',
 ]
 

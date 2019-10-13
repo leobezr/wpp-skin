@@ -43,9 +43,13 @@ class Container {
         this.auth = {
             running: false,
             interval: false,
+            shoudClear: false,
             countDown: () => {
-                let counter = 0;
-                setInterval(() => {
+                let counter = 0, ID;
+                
+                this.shoudClear = false;
+
+                ID = setInterval(() => {
                     if (!!this.auth.interval){
                         counter++
                     }
@@ -54,7 +58,18 @@ class Container {
                         counter = 0;
                         this.block();
                     }
+
+                    if (!!this.shoudClear){
+                        clearInterval(ID)
+                    }
                 }, this.blocker.time * 100)
+            },
+            release: () => {
+                this.auth.shoudClear = true;
+                
+                setTimeout(() => {
+                    this.auth.countDown()
+                }, (this.blocker.time * 100) + 1000)
             }
         }
 
@@ -157,6 +172,9 @@ class Container {
         let bool;
 
         bool = localStorage.getItem('auth');
+
+        if (bool === null) this.forceLogout();
+
         bool = bool.includes('true')
             ? true
             : false;
@@ -179,7 +197,6 @@ class Container {
     }
 
     refresh = function () {
-        let status;
         if (this.step === 'blocker'){
             $('#blockedContent').remove();
             this.block()
@@ -217,10 +234,11 @@ class Container {
         this.refresh();
     }
 
-    setPassword = function (password) {
+    setPassword = (password) => {
         chrome.storage.sync.set({
-            userPassword: password
+            userPassword: this.hash(password)
         })
+
         localStorage.setItem('auth', true);
         localStorage.setItem('loginChance', 3)
     }
@@ -247,5 +265,16 @@ class Container {
 
         $input = $container.find('input');
         return $input.val();
+    }
+
+    hash = function (string) {
+        var hash = 0, i, chr;
+        if (string.length === 0) return hash;
+        for (i = 0; i < string.length; i++) {
+            chr = string.charCodeAt(i);
+            hash = ((hash << 5) - hash) + chr;
+            hash |= 0;
+        }
+        return hash.toString();
     }
 }

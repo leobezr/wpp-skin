@@ -1,0 +1,39 @@
+@import './variable.scss';
+
+.plugin-options {
+  display: none;
+
+  &.display {
+    display: block;
+  }
+
+  [optioncaller] {
+    .cls-1 {
+      fill: #009588;
+    }
+    .cls-2 {
+      fill: #80868a;
+    }
+  }
+
+  .newTimer {
+    padding: 0 20px 10px 20px;
+    right: 0px;
+    bottom: 0;
+
+    input {
+      width: 100%;
+      border-radius: 26px;
+      background: #eeeeee;
+      padding: 5px;
+      box-sizing: border-box;
+      border: solid 1px #949a9c;
+      outline: none $i;
+    }
+  }
+
+  .disabled {
+    pointer-events: none;
+    filter: brightness(.9);
+  }
+}
