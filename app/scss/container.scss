@@ -42,12 +42,13 @@
         color: $primary $i;
       }
 
-      &:active, &:focus {
+      &:active,
+      &:focus {
         outline: none $i;
-        filter: brightness(.8)
+        filter: brightness(0.8);
       }
     }
-    
+
     label {
       text-align: center;
     }
@@ -60,6 +61,26 @@
       .btn-primary {
         margin-right: 10px $i;
       }
+    }
+  }
+
+  #register {
+
+    input {
+      margin-bottom: 10px $i;
+    }
+
+    .btn {
+      display: inline-block !important;
+      width: auto !important;
+      text-align: center;
+      margin: 0 auto;
+      margin-top: 30px;
+    }
+
+    label {
+      color: red;
+      margin-top: 20px;
     }
   }
 }
