@@ -8,7 +8,7 @@ class Container {
                     parseFloat(localStorage.getItem('loginChance'))
                 )
             },
-            time: 20,
+            time: 120,
             html: function () {
                 this.defineStep();
                 return (
