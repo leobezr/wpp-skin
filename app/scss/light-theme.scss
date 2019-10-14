@@ -67,7 +67,7 @@ $i: !important;
   // * Blur
   #app {
     &:not(:hover) {
-      filter: blur(0px);
+      filter: blur(10px);
     }
   }
 
