@@ -11,7 +11,8 @@ class Scope {
         this.theme = new Theme({
             methods: {
                 logout : () => this.resetPassword(),
-                timer : (int) => this.defineTimer(int)
+                timer : (int) => this.defineTimer(int),
+                refresh: () => this.container.refreshHandler.blocker(),
             }
         });
 

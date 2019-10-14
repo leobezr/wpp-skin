@@ -128,11 +128,11 @@ class Container {
         }
 
         this.refreshHandler = {
-            blocker: function () {
+            blocker: () => {
                 $('#blockedContent').remove()
                 this.block()
             },
-            definePassword: function () {
+            definePassword: () => {
                 $('#register').remove();
                 this.block()
             }

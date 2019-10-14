@@ -3,9 +3,8 @@ class Theme {
         this.props = props;
         this.methods = {
             logout: () => this.props.methods.logout(),
-            timer: (int) => {
-                this.props.methods.timer(int)
-            },
+            timer: (int) => this.props.methods.timer(int),
+            refresh: () => this.props.methods.refresh(),
         }
 
         this.builder = new Builder();
@@ -176,7 +175,7 @@ class Theme {
                 })
 
                 $optionList.find('._3cfBY').on('click', e => {
-                    
+
                     $selected = $(e.currentTarget).find('[command]');
 
                     switch ($selected.attr('command')) {
@@ -185,7 +184,7 @@ class Theme {
                                 inputValue: '',
                                 self: $selected
                             }
-                            
+
                             localState.self.addClass('disabled');
 
                             this.builder.newTimer()
@@ -193,11 +192,16 @@ class Theme {
                                 .on('keyup', event => {
                                     localState.inputValue = event.currentTarget.value;
 
-                                    if (event.keyCode === 13){
-                                        this.methods.timer(
-                                            parseFloat(localState.inputValue)
-                                        )
-                                        
+                                    if (event.keyCode === 13) {
+                                        let intValue;
+
+                                        intValue = parseFloat(localState.inputValue);
+                                        intValue = typeof intValue === 'number' && intValue >= 3
+                                            ? intValue
+                                            : 120
+
+                                        this.methods.timer(intValue);
+
                                         $(event.currentTarget).parent()
                                             .remove()
 
@@ -207,18 +211,31 @@ class Theme {
 
                                 })
                             break;
-                            default:
-                                console.log('click could not find command')                            
+
+                        case 'new_password':
+                            this.methods.logout()
+                            $optionList.toggleClass('display');
+                            break;
+
+                        case 'do_lock':
+                            this.methods.refresh()
+                            $optionList.toggleClass('display');
+                            break;
+
+                        case 'new_theme':
+                            this.builder.themes()
+                            $optionList.toggleClass('display');
+                            break;
+
+                        default:
+                            console.log('click could not find command')
                     }
                 })
             }
         }
 
         this.pageLoaded(() => this.shove(this.options))
-
-        // **
-        // * Teste
-        // this.methods.timer(500);
+        this.setTheme();
     }
 
     shove = function (item) {
@@ -235,8 +252,28 @@ class Theme {
         })
     }
 
+    // **
+    // * Callback when done
     done = function (callback) {
         callback.call();
+    }
+
+    setTheme = function(string, sudo) {
+        let themeColor;
+        string = string !== undefined && string.length >= 3
+            ? string
+            : 'default'
+
+        sudo = sudo !== undefined
+            ? sudo
+            : false
+        
+        themeColor = localStorage.getItem('theme');
+        if (themeColor !== undefined && themeColor.length >= 3 && !sudo) {
+            $('html').attr('theme', themeColor)
+        } else {
+            $('html').attr('theme', string)
+        }
     }
 }
 
@@ -261,7 +298,7 @@ class Builder {
                 `,
             appender: function () {
                 if (!!$('.newTimer').length) return $('.newTimer input')
-                
+
                 $('._2hHc6').append(this.html)
 
                 return (
@@ -271,5 +308,73 @@ class Builder {
         }
 
         return caller;
+    }
+
+    themes = function () {
+        const caller = {
+            html: `
+            <div class="container" id="modal-theme">
+                <div class="board">
+                    <div class="board-header">
+                        <ul>
+                            <li><span></span></li>
+                            <li><span></span></li>
+                            <li><span></span></li>
+                        </ul>
+                    </div>
+                    <div class="board-body">
+                        <h2>Choose a theme</h2>
+                        <ul>
+                            <li theme="light">
+                                <h3>Light</h3>
+                            </li>
+                            <li theme="dark">
+                                <h3>Dark</h3>
+                            </li>
+                            <li theme="default">
+                                <h3>Default</h3>
+                            </li>
+                            <li theme="pink">
+                                <h3>Pink</h3>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="board-footer">
+                        <a href="#" class="btn btn-primary">Choose</a>
+                    </div>
+                </div>
+            </div>
+            `,
+            appender: function () {
+                $('body').append(this.html);
+                setTimeout(() => {
+                    this.setEvents()
+                }, 1000)
+            },
+            setEvents: function () {
+                $('#modal-theme').find('li')
+                    .on('click', e => {
+                        let $self, scheme;
+
+                        $self = $(e.currentTarget);
+                        scheme = $self.attr('theme');
+
+                        $('#modal-theme').find('.active')
+                            .removeClass('active');
+
+                        $self.addClass('active');
+
+                        $('html').attr('theme', scheme);
+                        localStorage.setItem('theme', scheme);
+                    })
+
+                $('#modal-theme').find('.btn')
+                    .on('click', e => {
+                        $('#modal-theme').remove()
+                    })
+            }
+        }
+
+        caller.appender()
     }
 }
